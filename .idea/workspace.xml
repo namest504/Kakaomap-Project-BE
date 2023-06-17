@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab6e683d-9a19-424b-8b55-4dab0e4529a8" name="Changes" comment="init">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="ab6e683d-9a19-424b-8b55-4dab0e4529a8" name="Changes" comment="feat: Service 생성">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/list/kakaoMap/service/StoreService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +31,23 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="kakaoMap" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="kakaoMap" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="kakaoMap" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="kakaoMap" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -105,7 +122,7 @@
       <recent name="com.list.kakaoMap.config" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.KakaoMapApplication">
+  <component name="RunManager" selected="JUnit.StoreControllerTest">
     <configuration name="Kakaomap-Project-BE [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -233,8 +250,8 @@
       <list>
         <item itemvalue="JUnit.StoreControllerTest" />
         <item itemvalue="Gradle.Kakaomap-Project-BE [compileJava]" />
-        <item itemvalue="Gradle.Kakaomap-Project-BE [compileTestJava]" />
         <item itemvalue="Gradle.Kakaomap-Project-BE [clean]" />
+        <item itemvalue="Gradle.Kakaomap-Project-BE [compileTestJava]" />
         <item itemvalue="Gradle.Kakaomap-Project-BE [compileQuerydsl]" />
       </list>
     </recent_temporary>
@@ -250,6 +267,7 @@
       <workItem from="1686993143895" duration="12104000" />
       <workItem from="1687011348989" duration="171000" />
       <workItem from="1687011533039" duration="398000" />
+      <workItem from="1687011944195" duration="594000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1686993810580</created>
@@ -405,7 +423,63 @@
       <option name="project" value="LOCAL" />
       <updated>1687011844142</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="init">
+      <created>1687011984360</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1687011984360</updated>
+    </task>
+    <task id="LOCAL-00024" summary="feat: 테스트 API">
+      <created>1687012034953</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1687012034953</updated>
+    </task>
+    <task id="LOCAL-00025" summary="chore: QueryDsl 빈 등록">
+      <created>1687012307716</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1687012307716</updated>
+    </task>
+    <task id="LOCAL-00026" summary="feat: Store Entity 정의">
+      <created>1687012324497</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1687012324497</updated>
+    </task>
+    <task id="LOCAL-00027" summary="feat: Store API 추가">
+      <created>1687012354024</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1687012354024</updated>
+    </task>
+    <task id="LOCAL-00028" summary="test: 가게 등록 테스트">
+      <created>1687012393064</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1687012393064</updated>
+    </task>
+    <task id="LOCAL-00029" summary="feat: 가게 Dto">
+      <created>1687012405429</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1687012405429</updated>
+    </task>
+    <task id="LOCAL-00030" summary="feat: Repository 생성">
+      <created>1687012421347</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1687012421347</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -438,7 +512,15 @@
     <MESSAGE value="chore: h2 설정" />
     <MESSAGE value="fix: AutoIncrement 설정" />
     <MESSAGE value="init" />
-    <option name="LAST_COMMIT_MESSAGE" value="init" />
+    <MESSAGE value="feat: 테스트 API" />
+    <MESSAGE value="chore: QueryDsl 빈 등록" />
+    <MESSAGE value="feat: Store Entity 정의" />
+    <MESSAGE value="feat: Store API 추가" />
+    <MESSAGE value="test: 가게 등록 테스트" />
+    <MESSAGE value="feat: 가게 Dto" />
+    <MESSAGE value="feat: Repository 생성" />
+    <MESSAGE value="feat: Service 생성" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Service 생성" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
