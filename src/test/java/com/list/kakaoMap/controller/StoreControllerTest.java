@@ -39,7 +39,7 @@ class StoreControllerTest {
     @DisplayName("가게 등록 테스트")
     public void addTest() {
         List<Store> result = storeService.findStore("test_7e6b067e0783");
-        
+
         Assertions.assertThat(result.get(0).getName()).isEqualTo("test_7e6b067e0783");
     }
 
