@@ -18,8 +18,8 @@ public class StoreController {
     private final StoreService storeService;
 
     @PostMapping("/add")
-    public AddStoreResponse addStore(@RequestBody AddStoreRequest addStoreRequest) {
-        return new AddStoreResponse(true, storeService.addStore(addStoreRequest).getName());
+    public StoreResponse addStore(@RequestBody StoreRequest storeRequest) {
+        return new StoreResponse(true, storeService.addStore(storeRequest).getName());
     }
 
     @GetMapping("/find")
@@ -30,4 +30,9 @@ public class StoreController {
         return new FindStoreResponse(true, collect);
     }
 
+    @PutMapping("/edit/{storeId}")
+    public StoreResponse editStore(@PathVariable Long storeId, @RequestBody StoreRequest storeRequest) {
+        Store store = storeService.editStore(storeService.findStoreById(storeId).getId(), storeRequest);
+        return new StoreResponse(true, store.getName());
+    }
 }
