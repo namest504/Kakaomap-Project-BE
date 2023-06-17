@@ -26,7 +26,7 @@ public class StoreController {
     public FindStoreResponse findStore(@RequestParam String name) {
         List<Store> store = storeService.findStore(name);
         List<FindStoreDto> collect = store.stream()
-                .map(s -> new FindStoreDto(s.getId(), s.getName())).collect(Collectors.toList());
+                .map(s -> new FindStoreDto(s.getId(), s.getName(), s.getDetail(), s.getPosX(), s.getPosY())).collect(Collectors.toList());
         return new FindStoreResponse(true, collect);
     }
 
