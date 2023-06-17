@@ -3,7 +3,6 @@ package com.list.kakaoMap.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StoreDto {
@@ -12,7 +11,7 @@ public class StoreDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class AddStoreRequest {
+    public static class StoreRequest {
         private String name;
         private String detail;
         private double posX;
@@ -23,7 +22,7 @@ public class StoreDto {
     @Setter
     @AllArgsConstructor
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public static class AddStoreResponse {
+    public static class StoreResponse {
         private boolean success;
         private String name;
     }
