@@ -35,6 +35,9 @@ public class StoreDto {
     public static class FindStoreDto {
         private Long id;
         private String name;
+        private String detail;
+        private double posX;
+        private double posY;
     }
 
     @Getter
