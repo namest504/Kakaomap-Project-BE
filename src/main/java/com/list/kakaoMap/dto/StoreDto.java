@@ -48,6 +48,14 @@ public class StoreDto {
         private List<FindStoreDto> result;
     }
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public static class DeleteStoreResponse {
+        private boolean success;
+    }
+
 
 
 }
