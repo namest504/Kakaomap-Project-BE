@@ -51,4 +51,9 @@ public class StoreService {
                 .posY(storeRequest.getPosY())
                 .build());
     }
+
+    public boolean deleteStore(Long storeId) {
+        storeRepository.deleteById(storeId);
+        return true;
+    }
 }
