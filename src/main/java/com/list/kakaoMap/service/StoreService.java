@@ -2,9 +2,11 @@ package com.list.kakaoMap.service;
 
 import com.list.kakaoMap.entity.QStore;
 import com.list.kakaoMap.entity.Store;
+import com.list.kakaoMap.exception.CustomException;
 import com.list.kakaoMap.repository.StoreRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,12 +20,12 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final JPAQueryFactory jpaQueryFactory;
 
-    public Store addStore(AddStoreRequest addStoreRequest) {
+    public Store addStore(StoreRequest storeRequest) {
         return storeRepository.save(Store.builder()
-                .name(addStoreRequest.getName())
-                .detail(addStoreRequest.getDetail())
-                .posX(addStoreRequest.getPosX())
-                .posY(addStoreRequest.getPosY())
+                .name(storeRequest.getName())
+                .detail(storeRequest.getDetail())
+                .posX(storeRequest.getPosX())
+                .posY(storeRequest.getPosY())
                 .build());
     }
 
@@ -33,5 +35,25 @@ public class StoreService {
                 .selectFrom(qStore)
                 .where(qStore.name.contains(name))
                 .fetch();
+    }
+
+    public Store findStoreById(Long storeId) {
+        return storeRepository.findById(storeId)
+                .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "가게가 존재하지 않습니다."));
+    }
+
+    public Store editStore(Long storeId, StoreRequest storeRequest) {
+        return storeRepository.save(Store.builder()
+                .id(storeId)
+                .name(storeRequest.getName())
+                .detail(storeRequest.getDetail())
+                .posX(storeRequest.getPosX())
+                .posY(storeRequest.getPosY())
+                .build());
+    }
+
+    public boolean deleteStore(Long storeId) {
+        storeRepository.deleteById(storeId);
+        return true;
     }
 }
