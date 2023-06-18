@@ -17,12 +17,12 @@ public class StoreController {
 
     private final StoreService storeService;
 
-    @PostMapping("/add")
+    @PostMapping
     public StoreResponse addStore(@RequestBody StoreRequest storeRequest) {
         return new StoreResponse(true, storeService.addStore(storeRequest).getName());
     }
 
-    @GetMapping("/find")
+    @GetMapping
     public FindStoreResponse findStore(@RequestParam String name) {
         List<Store> store = storeService.findStore(name);
         List<FindStoreDto> collect = store.stream()
@@ -30,9 +30,14 @@ public class StoreController {
         return new FindStoreResponse(true, collect);
     }
 
-    @PutMapping("/edit/{storeId}")
+    @PutMapping("/{storeId}")
     public StoreResponse editStore(@PathVariable Long storeId, @RequestBody StoreRequest storeRequest) {
-        Store store = storeService.editStore(storeService.findStoreById(storeId).getId(), storeRequest);
+        Store store = storeService.editStore(storeId, storeRequest);
         return new StoreResponse(true, store.getName());
+    }
+
+    @DeleteMapping("/{storeId}")
+    public DeleteStoreResponse deleteStore(@PathVariable Long storeId) {
+        return new DeleteStoreResponse(storeService.deleteStore(storeId));
     }
 }
