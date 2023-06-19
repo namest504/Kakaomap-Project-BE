@@ -40,4 +40,12 @@ public class StoreController {
     public DeleteStoreResponse deleteStore(@PathVariable Long storeId) {
         return new DeleteStoreResponse(storeService.deleteStore(storeId));
     }
+
+    @GetMapping("/all")
+    public FindStoreResponse findAllStore() {
+        List<Store> store = storeService.findAllStore();
+        List<FindStoreDto> collect = store.stream()
+                .map(s -> new FindStoreDto(s.getId(), s.getName(), s.getDetail(), s.getPosX(), s.getPosY())).collect(Collectors.toList());
+        return new FindStoreResponse(true, collect);
+    }
 }

@@ -37,6 +37,13 @@ public class StoreService {
                 .fetch();
     }
 
+    public List<Store> findAllStore() {
+        QStore qStore = new QStore("store");
+        return jpaQueryFactory
+                .selectFrom(qStore)
+                .fetch();
+    }
+
     public Store findStoreById(Long storeId) {
         return storeRepository.findById(storeId)
                 .orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, "가게가 존재하지 않습니다."));
