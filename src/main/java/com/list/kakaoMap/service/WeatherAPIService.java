@@ -3,7 +3,10 @@ package com.list.kakaoMap.service;
 import com.list.kakaoMap.dto.WeatherDto.Item;
 import com.list.kakaoMap.dto.WeatherDto.Items;
 import com.list.kakaoMap.dto.WeatherDto.WeatherApiResponse;
+import com.list.kakaoMap.entity.WeatherInfo;
+import com.list.kakaoMap.repository.WeatherInfoRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -18,10 +21,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class WeatherAPIService {
 
     @Value("${WEATHER_SECRET_KEY}")
     private String WEATHER_SECRET_KEY;
+
+    private final WeatherInfoRepository weatherInfoRepository;
 
     public WeatherApiResponse gettingInfoWeather() {
 
@@ -65,5 +71,22 @@ public class WeatherAPIService {
             }
         }
         return new Items(result);
+    }
+
+    public void saveInfo(List<Item> items) {
+        for (Item item : items) {
+            WeatherInfo weatherInfo = WeatherInfo.builder()
+                    .baseDate(item.getBaseDate())
+                    .baseTime(item.getBaseTime())
+                    .category(item.getCategory())
+                    .fcstDate(item.getFcstDate())
+                    .fcstTime(item.getFcstTime())
+                    .fcstValue(item.getFcstValue())
+                    .nx(item.getNx())
+                    .ny(item.getNy())
+                    .build();
+            weatherInfoRepository.save(weatherInfo);
+        }
+        log.info("saveInfo 실행");
     }
 }
