@@ -1,10 +1,13 @@
 package com.list.kakaoMap.service;
 
-import com.list.kakaoMap.dto.WeatherDto.Item;
-import com.list.kakaoMap.dto.WeatherDto.Items;
-import com.list.kakaoMap.dto.WeatherDto.WeatherApiResponse;
+import com.list.kakaoMap.dto.WeatherInfoDto.Item;
+import com.list.kakaoMap.dto.WeatherInfoDto.Items;
+import com.list.kakaoMap.dto.WeatherInfoDto.WeatherApiResponse;
+import com.list.kakaoMap.dto.WeatherInfoDto.WeatherInfoResponse;
+import com.list.kakaoMap.entity.QWeatherInfo;
 import com.list.kakaoMap.entity.WeatherInfo;
 import com.list.kakaoMap.repository.WeatherInfoRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,10 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,19 +27,18 @@ public class WeatherAPIService {
     private String WEATHER_SECRET_KEY;
 
     private final WeatherInfoRepository weatherInfoRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
-    public WeatherApiResponse gettingInfoWeather() {
+    public WeatherApiResponse gettingTestInfo(String dateString, String timeString) {
+        WeatherApiResponse weatherApiResponse = WebClient.create("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=CnLzOXapELF0TIJM2t5aR0U7u6oVK9Y5Uf22qHxkiMUILuRP1pSn09iKEEhQkUSYObWk0u8ueCNLD2nPIvA8TQ==&pageNo=1&numOfRows=1000&dataType=JSON&base_date=" + dateString + "&base_time=" + timeString + "&nx=55&ny=127")
+                .get()
+                .retrieve()
+                .bodyToMono(WeatherApiResponse.class)
+                .block();
+        return weatherApiResponse;
+    }
 
-        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
-        LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
-
-        // 날짜(format: yyyyMMdd)
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String dateString = localDateTime.format(dateFormatter);
-
-        // 시간(format: HH00)
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
-        String timeString = localDateTime.minusHours(1).format(timeFormatter);
+    public WeatherApiResponse gettingInfoWeather(String dateString, String timeString) {
 
         WeatherApiResponse weatherApiResponseMono = WebClient.create("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0")
                 .get()
@@ -51,7 +49,7 @@ public class WeatherAPIService {
                         .queryParam("numOfRows", "1000")
                         .queryParam("dataType", "JSON")
                         .queryParam("base_date", dateString)
-                        .queryParam("base_time", timeString + "00")
+                        .queryParam("base_time", timeString)
                         .queryParam("nx", "59")
                         .queryParam("ny", "110")
                         .build())
@@ -62,12 +60,15 @@ public class WeatherAPIService {
         return weatherApiResponseMono;
     }
 
-    public Items parsingWeather(WeatherApiResponse weatherApiResponse) {
+    public Items parsingWeather(WeatherApiResponse weatherApiResponse, String dateString, String nextTimeString) {
+
         List<Item> item = weatherApiResponse.getResponse().getBody().getItems().getItem();
         List<Item> result = new ArrayList<>();
         for (Item info : item) {
             if (info.getCategory().equals("T1H") || info.getCategory().equals("RN1")) {
-                result.add(info);
+                if (info.getFcstDate().equals(dateString) && info.getFcstTime().equals(nextTimeString)) {
+                    result.add(info);
+                }
             }
         }
         return new Items(result);
@@ -88,5 +89,24 @@ public class WeatherAPIService {
             weatherInfoRepository.save(weatherInfo);
         }
         log.info("saveInfo 실행");
+    }
+
+    public WeatherInfoResponse findRecentWeatherInfo(String date, String time) {
+        QWeatherInfo qWeatherInfo = new QWeatherInfo("weatherinfo");
+
+        List<WeatherInfo> weatherInfos = jpaQueryFactory.selectFrom(qWeatherInfo)
+                .where(qWeatherInfo.fcstDate.eq(date))
+                .where(qWeatherInfo.fcstTime.eq(time))
+                .fetch();
+
+        WeatherInfoResponse weatherInfoResponse = new WeatherInfoResponse();
+        for (WeatherInfo weatherInfo : weatherInfos) {
+            if (weatherInfo.getCategory().equals("T1H"))
+                weatherInfoResponse.setTemperatureValue(weatherInfo.getFcstValue());
+            else if (weatherInfo.getCategory().equals("RN1"))
+                weatherInfoResponse.setRainValue(weatherInfo.getFcstValue());
+        }
+
+        return weatherInfoResponse;
     }
 }
