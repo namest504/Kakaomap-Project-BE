@@ -7,7 +7,17 @@ import lombok.Setter;
 
 import java.util.List;
 
-public class WeatherDto {
+public class WeatherInfoDto {
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class WeatherInfoResponse {
+        private boolean success;
+        private String rainValue;
+        private String temperatureValue;
+    }
 
     @Getter
     @Setter
