@@ -15,6 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +31,28 @@ public class WeatherAPIService {
 
     private final WeatherInfoRepository weatherInfoRepository;
     private final JPAQueryFactory jpaQueryFactory;
+
+    public List<String> gettingTime() {
+
+        List<String> strings = new ArrayList<>();
+
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        // 날짜(format: yyyyMMdd)
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String dateString = localDateTime.format(dateFormatter);
+
+        // 시간(format: HH00)
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
+        String timeString = localDateTime.minusHours(1).format(timeFormatter) + "30";
+        String nextTimeString = localDateTime.plusHours(1).format(timeFormatter) + "00";
+
+        strings.add(dateString);
+        strings.add(timeString);
+        strings.add(nextTimeString);
+
+        return strings;
+    }
 
     public WeatherApiResponse gettingTestInfo(String dateString, String timeString) {
         WeatherApiResponse weatherApiResponse = WebClient.create("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=CnLzOXapELF0TIJM2t5aR0U7u6oVK9Y5Uf22qHxkiMUILuRP1pSn09iKEEhQkUSYObWk0u8ueCNLD2nPIvA8TQ==&pageNo=1&numOfRows=1000&dataType=JSON&base_date=" + dateString + "&base_time=" + timeString + "&nx=55&ny=127")

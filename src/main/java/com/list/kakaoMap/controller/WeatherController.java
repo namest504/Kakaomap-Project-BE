@@ -11,10 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,7 +24,7 @@ public class WeatherController {
     @GetMapping
     public WeatherApiResponse getWeatherDataWeather() {
 
-        List<String> time = getTime();
+        List<String> time = weatherAPIService.gettingTime();
         String dateString = time.get(0);
         String timeString = time.get(1);
 
@@ -41,7 +37,7 @@ public class WeatherController {
     @GetMapping("/test1")
     public Items getWeatherParsingDataWeather() {
 
-        List<String> time = getTime();
+        List<String> time = weatherAPIService.gettingTime();
         String dateString = time.get(0);
         String timeString = time.get(1);
         String nextTimeString = time.get(2);
@@ -56,7 +52,7 @@ public class WeatherController {
     @GetMapping("/test2")
     public WeatherApiResponse gettingTest2() {
 
-        List<String> time = getTime();
+        List<String> time = weatherAPIService.gettingTime();
         String dateString = time.get(0);
         String timeString = time.get(1);
         String nextTimeString = time.get(2);
@@ -72,7 +68,7 @@ public class WeatherController {
     @Scheduled(cron = "0 47 * * * ?", zone = "Asia/Seoul") // 00초 47분 매시 매일 매월 모든요일 서울 시간을 기준을 실행
     public void scheduledGetWeather() {
 
-        List<String> time = getTime();
+        List<String> time = weatherAPIService.gettingTime();
         String dateString = time.get(0);
         String timeString = time.get(1);
         String nextTimeString = time.get(2);
@@ -87,35 +83,12 @@ public class WeatherController {
     @GetMapping("/info")
     public WeatherInfoResponse gettingRecentWeatherData() {
 
-        List<String> time = getTime();
+        List<String> time = weatherAPIService.gettingTime();
         String dateString = time.get(0);
         String nextTimeString = time.get(2);
 
         WeatherInfoResponse recentWeatherInfo = weatherAPIService.findRecentWeatherInfo(dateString, nextTimeString);
         recentWeatherInfo.setSuccess(true);
         return recentWeatherInfo;
-    }
-
-    protected List<String> getTime() {
-
-        List<String> strings = new ArrayList<>();
-
-        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-
-        // 날짜(format: yyyyMMdd)
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String dateString = localDateTime.format(dateFormatter);
-
-        // 시간(format: HH00)
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH");
-        String timeString = localDateTime.minusHours(1).format(timeFormatter) + "30";
-        String nextTimeString = localDateTime.plusHours(1).format(timeFormatter) + "00";
-
-        strings.add(dateString);
-        strings.add(timeString);
-        strings.add(nextTimeString);
-
-        return strings;
-
     }
 }
