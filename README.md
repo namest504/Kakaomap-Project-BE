@@ -21,7 +21,7 @@
 
 언어 : JAVA
 
-프레임워크 : Spring Boot, JPA, WebFlux
+프레임워크 : Spring Boot, JPA, WebFlux(WebClient 사용)
 
 데이터베이스 : H2, MariaDB
 
